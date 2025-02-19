@@ -1,46 +1,64 @@
 #pragma once
 
 #include <string>
+#include <map>
+
 #include <GLES3/gl3.h>
+#include <glm/glm.hpp>
 
-#include "Entity.h"
+namespace cp {
 
-class Shader {
-public:
-    static Shader *Create(
-            const std::string &vertexSource,
-            const std::string &fragmentSource,
-            const std::string &positionAttributeName,
-            const std::string &uvAttributeName,
-            const std::string &normalAttributeName);
+    class Shader {
+    public:
+        using Ptr = std::shared_ptr<Shader>;
+        using WeakPtr = std::weak_ptr<Shader>;
 
-    inline ~Shader() {
-        if (program) {
-            glDeleteProgram(program);
-            program = 0;
-        }
-    }
+    public:
+        static Ptr Create(
+                const std::string &vertexSource,
+                const std::string &fragmentSource,
+                const std::string &positionAttributeName,
+                const std::string &uvAttributeName,
+                const std::string &normalAttributeName);
 
-    void Activate() const;
-    void Deactivate() const;
+        ~Shader();
 
-    void SetUniform(const std::string& name, const glm::mat4& value) const;
-    void SetUniform(const std::string& name, const glm::vec3& value) const;
+        void Activate() const;
+        void Deactivate() const;
 
-    GLuint GetPositionAttributeIndex() const { return positionIndex; }
-    GLuint GetUVAttributeIndex() const { return uvIndex; }
-    GLuint GetNormalAttributeIndex() const { return normalIndex; }
+        void SetUniform(const std::string& name, const glm::mat4& value) const;
+        void SetUniform(const std::string& name, const glm::vec3& value) const;
+        void SetUniform(const std::string& name, float value) const;
 
-private:
-    constexpr Shader(GLuint program, GLint position, GLint uv, GLint normal)
-    : program(program),
-      positionIndex(position),
-      uvIndex(uv),
-      normalIndex(normal) {}
+        GLuint GetPositionAttributeIndex() const { return positionIndex; }
+        GLuint GetUVAttributeIndex() const { return uvIndex; }
+        GLuint GetNormalAttributeIndex() const { return normalIndex; }
 
-private:
-    GLuint program;
-    GLint positionIndex;
-    GLint uvIndex;
-    GLint normalIndex;
-};
+    private:
+        Shader(GLuint program, GLint position, GLint uv, GLint normal)
+        : program(program)
+        , positionIndex(position)
+        , uvIndex(uv)
+        , normalIndex(normal) {}
+
+    private:
+        GLuint program{0};
+        GLint positionIndex{0};
+        GLint uvIndex{0};
+        GLint normalIndex{0};
+    };
+
+    class ShaderLib {
+    public:
+        void Add(const std::string& name, Shader::Ptr shader);
+        [[nodiscard]] Shader::WeakPtr Get(const std::string& name) const;
+
+        void Clear();
+
+    private:
+        std::map<std::string, Shader::Ptr> shaders;
+    };
+
+    extern ShaderLib gShaderLib;
+
+}

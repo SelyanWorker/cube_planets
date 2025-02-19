@@ -5,7 +5,7 @@
 #include <game-activity/native_app_glue/android_native_app_glue.c>
 #include <chrono>
 
-#include "AndroidOut.h"
+#include "LogBuffer.h"
 #include "Engine.h"
 
 extern "C" {
@@ -62,12 +62,9 @@ void HandleCmd(android_app *pApp, int32_t cmd) {
 
 
 void android_main(struct android_app *pApp) {
-    // Register an event handler for Android events
     pApp->onAppCmd = HandleCmd;
 
     while (!pApp->destroyRequested) {
-        // Our input, sensor, and update/render logic is all driven by callbacks, so
-        // we don't need to use the non-blocking poll.
         android_poll_source* source = nullptr;
         auto result = ALooper_pollOnce(0, nullptr, nullptr,
                                        reinterpret_cast<void**>(&source));

@@ -8,8 +8,11 @@ namespace cp {
 
     class CubePlanet : public DrawableTextured {
     public:
-        explicit CubePlanet(const Texture2D::Ptr& texture)
-        : DrawableTextured(CreateCube(), texture) {}
+        CubePlanet(const Texture2D::Ptr& texture,
+                   float orbitRadius,
+                   float orbitRotationSpeed,
+                   float spinSpeed,
+                   bool isClockWiseOrbitRotation);
 
         void Update(int64_t elapsedTime) override;
 
@@ -19,6 +22,11 @@ namespace cp {
         void UpdateOrbitRotation(float rotationFactor);
 
     private:
+        const float orbitRadius;
+        const float orbitRotationSpeed;
+        const float spinSpeed;
+        const bool isClockWiseOrbitRotation;
+
         glm::vec2 prevPointerPosition{0};
         float orbitRotation{0};
         bool isPointerMovedOnPrevUpdate{false};

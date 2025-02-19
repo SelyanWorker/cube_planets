@@ -3,17 +3,16 @@
 
 #include "Entity.h"
 
-glm::mat4 cp::Entity::CreateModelMatrix() const {
-    glm::mat4 translationMatrix = glm::translate(glm::identity<glm::mat4>(), position);
+namespace cp {
 
-    glm::mat4 rotationMatrix = glm::rotate(glm::identity<glm::mat4>(),
-                                           glm::radians(rotation.x), glm::vec3{1, 0, 0});
-    rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.y),
-                                 glm::vec3{0, 1, 0});
-    rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.z),
-                                 glm::vec3{0, 0, 1});
+    glm::mat4 Entity::CreateModelMatrix() const {
+        glm::mat4 modelMatrix = glm::translate(glm::mat4{1}, position);
+        modelMatrix = glm::rotate(modelMatrix,glm::radians(rotation.x), glm::vec3{1, 0, 0});
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(rotation.y), glm::vec3{0, 1, 0});
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(rotation.z), glm::vec3{0, 0, 1});
+        modelMatrix = glm::scale(modelMatrix, glm::vec3{scale});
+        return modelMatrix;
+    }
 
-    glm::mat4 scaleMatrix = glm::scale(glm::identity<glm::mat4>(), glm::vec3{scale});
-
-    return translationMatrix * rotationMatrix * scaleMatrix;
 }
+

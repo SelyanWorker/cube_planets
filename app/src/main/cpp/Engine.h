@@ -29,15 +29,13 @@ namespace cp {
 
     private:
         android_app *pApp;
-        EGLDisplay display_;
-        EGLSurface surface_;
-        EGLContext context_;
-        EGLint width_;
-        EGLint height_;
+        EGLDisplay display{EGL_NO_DISPLAY};
+        EGLSurface surface{EGL_NO_SURFACE};
+        EGLContext context{EGL_NO_CONTEXT};
+        EGLint width{0};
+        EGLint height{0};
 
-        bool shaderNeedsNewProjectionMatrix_;
-
-        std::unique_ptr<Shader> cubePlanetShader;
+        bool shaderNeedsNewProjectionMatrix{true};
 
         cp::Scene scene;
     };

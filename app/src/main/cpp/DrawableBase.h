@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include "Entity.h"
 #include "Geometry.h"
 #include "Shader.h"
@@ -8,8 +10,8 @@ namespace cp {
 
     class DrawableBase : public Entity {
     public:
-        explicit DrawableBase(const Geometry::Ptr& geometry)
-        : geometry(geometry) {}
+        explicit DrawableBase(Geometry::Ptr  geometry)
+        : geometry(std::move(geometry)) {}
 
         virtual void Draw(const Shader& shader) const;
 

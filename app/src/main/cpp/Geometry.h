@@ -26,7 +26,7 @@ namespace cp {
         using Ptr = std::shared_ptr<Geometry>;
 
     public:
-        static Ptr Create(std::vector<Vertex>&& vertices, std::vector<Index>&& indices){
+        static Ptr Create(std::vector<Vertex>&& vertices, std::vector<Index>&& indices) {
             return Ptr(new Geometry(std::move(vertices), std::move(indices)));
         }
 

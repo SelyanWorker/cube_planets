@@ -11,7 +11,7 @@ add_subdirectory(glm)
 # one used for loading in your Kotlin/Java or AndroidManifest.txt files.
 add_library(cube_planets SHARED
         main.cpp
-        AndroidOut.cpp
+        LogBuffer.cpp
         Engine.cpp
         Shader.cpp
         Texture2D.cpp
@@ -23,7 +23,8 @@ add_library(cube_planets SHARED
         Input.cpp
         CubePlanet.cpp
         Geometry.cpp
-        Utility.cpp)
+        CubeSun.cpp
+)
 
 # Searches for a package provided by the game activity dependency
 find_package(game-activity REQUIRED CONFIG)

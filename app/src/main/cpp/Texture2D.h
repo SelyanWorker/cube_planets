@@ -13,7 +13,7 @@ namespace cp {
         using Ptr = std::shared_ptr<Texture2D>;
 
     public:
-        static Ptr Create(AAssetManager *assetManager, const std::string &assetPath, uint8_t textureUnit);
+        static Ptr Create(AAssetManager *assetManager, const std::string &assetPath, uint8_t textureUnit = 0);
 
         ~Texture2D();
 
@@ -26,8 +26,30 @@ namespace cp {
         , textureUnit(textureUnit) {}
 
     private:
-        uint8_t textureUnit;
-        GLuint textureId;
+        uint8_t textureUnit{0};
+        GLuint textureId{0};
+    };
+
+
+    class TextureBindHelper {
+    public:
+        explicit TextureBindHelper(Texture2D::Ptr _texture)
+        : texture(std::move(_texture)) {
+            if (texture) {
+                texture->Bind();
+            }
+        }
+
+        ~TextureBindHelper() {
+            if (texture) {
+                texture->Unbind();
+            }
+        }
+
+        TextureBindHelper(const TextureBindHelper&) = delete;
+        TextureBindHelper(TextureBindHelper&&) = delete;
+    private:
+        std::shared_ptr<Texture2D> texture;
     };
 
 } // cp

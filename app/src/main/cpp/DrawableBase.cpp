@@ -3,7 +3,9 @@
 namespace cp {
 
     void DrawableBase::Draw(const Shader &shader) const {
-        shader.SetUniform("uModel", CreateModelMatrix());
+        if (!geometry) {
+            return;
+        }
 
         BindGeometry(shader);
         DrawElements();
@@ -21,36 +23,33 @@ namespace cp {
         const GLuint normalIndex = shader.GetNormalAttributeIndex();
 
         auto pVertexData = geometry->GetVertices().data();
-        // The position attribute is 3 floats
         glVertexAttribPointer(
-                positionIndex, // attrib
-                3, // elements
-                GL_FLOAT, // of type float
-                GL_FALSE, // don't normalize
-                sizeof(Vertex), // stride is Vertex bytes
-                pVertexData // pull from the start of the vertex data
+                positionIndex,
+                3,
+                GL_FLOAT,
+                GL_FALSE,
+                sizeof(Vertex),
+                pVertexData
         );
         glEnableVertexAttribArray(positionIndex);
 
-        // The uv attribute is 2 floats
         glVertexAttribPointer(
-                uvIndex, // attrib
-                2, // elements
-                GL_FLOAT, // of type float
-                GL_FALSE, // don't normalize
-                sizeof(Vertex), // stride is Vertex bytes
-                ((uint8_t *) pVertexData) + sizeof(Vertex::position) // offset position data from the start
+                uvIndex,
+                2,
+                GL_FLOAT,
+                GL_FALSE,
+                sizeof(Vertex),
+                ((uint8_t *) pVertexData) + sizeof(Vertex::position)
         );
         glEnableVertexAttribArray(uvIndex);
 
-        // The normal attribute is 3 floats
         glVertexAttribPointer(
-                normalIndex, // attrib
-                3, // elements
-                GL_FLOAT, // of type float
-                GL_FALSE, // don't normalize
-                sizeof(Vertex), // stride is Vertex bytes
-                ((uint8_t *) pVertexData) + sizeof(Vertex::position) + sizeof(Vertex::uv) // offset position and uv data from the start
+                normalIndex,
+                3,
+                GL_FLOAT,
+                GL_FALSE,
+                sizeof(Vertex),
+                ((uint8_t *) pVertexData) + sizeof(Vertex::position) + sizeof(Vertex::uv)
         );
         glEnableVertexAttribArray(normalIndex);
     }

@@ -1,7 +1,7 @@
 #include <game-activity/native_app_glue/android_native_app_glue.h>
 
 #include "Input.h"
-#include "AndroidOut.h"
+#include "LogBuffer.h"
 
 namespace cp {
 
@@ -38,8 +38,6 @@ namespace cp {
                     GameActivityPointerAxes_getX(&pointer),
                     GameActivityPointerAxes_getY(&pointer)
             };
-
-            //aout << "Pointer position: (" << pointer.id << ", " << pointerPosition.x << ", " << pointerPosition.y << ")" << std::endl;
         }
 
         android_app_clear_motion_events(inputBuffer);

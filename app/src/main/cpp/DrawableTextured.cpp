@@ -3,11 +3,9 @@
 namespace cp {
 
     void DrawableTextured::Draw(const Shader &shader) const {
-        texture->Bind();
+        TextureBindHelper bindHelper{texture};
 
         DrawableBase::Draw(shader);
-
-        texture->Unbind();
     }
 
 } // cp
